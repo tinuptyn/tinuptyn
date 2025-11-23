@@ -163,6 +163,13 @@
             height: 250px;
             object-fit: cover;
             transition: var(--transition);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card-image[src=""],
+        .card-image:not([src]),
+        .card-image[src*="error"] {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
         .destination-card:hover .card-image {
@@ -341,6 +348,7 @@
             height: 400px;
             object-fit: cover;
             border-radius: 20px 20px 0 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
         .modal-body {
@@ -546,7 +554,7 @@
                 name: "法罗群岛",
                 location: "丹麦",
                 category: "海岛",
-                image: "https://images.unsplash.com/photo-1570993492881-25240ce854f4?w=800&q=80",
+                image: "https://picsum.photos/seed/faroe/800/600",
                 shortDesc: "北大西洋上的遗世仙境，壮美的峭壁与传统草屋村落完美融合。",
                 fullDesc: "法罗群岛位于冰岛和挪威之间，由18个火山岛组成。这里拥有令人叹为观止的自然景观：垂直的海蚀崖、瀑布飞泻入海、绿茵茵的山坡和传统的草皮屋顶房屋。群岛人口稀少，保持着原生态的自然风光和传统的北欧文化。",
                 tags: ["峭壁", "徒步", "观鸟", "摄影天堂"],
@@ -561,7 +569,7 @@
                 name: "格鲁吉亚斯瓦涅季",
                 location: "格鲁吉亚",
                 category: "山地",
-                image: "https://images.unsplash.com/photo-1592409294210-af7438c52320?w=800&q=80",
+                image: "https://picsum.photos/seed/georgia/800/600",
                 shortDesc: "高加索山脉深处的中世纪防御塔村落，欧洲最高海拔的居住地之一。",
                 fullDesc: "斯瓦涅季是格鲁吉亚西北部的一个历史地区，以其独特的中世纪防御塔而闻名。这些石塔建于9-13世纪，至今仍矗立在雪山环绕的村庄中。地区位于高加索山脉，拥有壮丽的山峰、冰川和高山湖泊，是徒步爱好者的天堂。",
                 tags: ["古塔", "高山", "文化遗产", "徒步"],
@@ -576,7 +584,7 @@
                 name: "阿尔巴尼亚里维埃拉",
                 location: "阿尔巴尼亚",
                 category: "海岛",
-                image: "https://images.unsplash.com/photo-1561037596-5bfdc33f35e4?w=800&q=80",
+                image: "https://picsum.photos/seed/albania/800/600",
                 shortDesc: "地中海上的隐秘海岸线，清澈碧蓝的海水与未被过度开发的古村落。",
                 fullDesc: "阿尔巴尼亚里维埃拉是亚得里亚海和爱奥尼亚海沿岸的一段海岸线，拥有水晶般清澈的海水、隐秘的海湾和传统的石砌村庄。相比希腊和意大利的热门海滨，这里保持着原始的魅力和实惠的价格，正在成为欧洲背包客的新宠。",
                 tags: ["海滩", "潜水", "古村", "经济实惠"],
@@ -591,7 +599,7 @@
                 name: "罗弗敦群岛",
                 location: "挪威",
                 category: "海岛",
-                image: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=800&q=80",
+                image: "https://picsum.photos/seed/lofoten/800/600",
                 shortDesc: "北极圈内的摄影师天堂，极光、午夜太阳与红色渔村的完美组合。",
                 fullDesc: "罗弗敦群岛位于挪威北部，北极圈以北。这里拥有挪威最壮观的自然景观：尖峭的山峰直插云霄、深邃的峡湾、白沙滩和传统的红色渔村小屋。冬季可以看到极光，夏季则能体验午夜太阳的奇景。",
                 tags: ["极光", "峡湾", "渔村", "摄影"],
@@ -606,7 +614,7 @@
                 name: "云南沙溪古镇",
                 location: "中国",
                 category: "古镇",
-                image: "https://images.unsplash.com/photo-1594047919733-c3e5293d364d?w=800&q=80",
+                image: "https://picsum.photos/seed/shaxi/800/600",
                 shortDesc: "茶马古道上的重要驿站，保存完好的白族传统村落，宁静祥和。",
                 fullDesc: "沙溪古镇位于云南大理和丽江之间，曾是茶马古道上的重要集市。与大理、丽江相比，这里游客较少，保持着更原始的白族风情。古镇中心的寺登街完整保留了明清时期的建筑格局，石板路、马店、古戏台诉说着往日的繁华。",
                 tags: ["茶马古道", "白族文化", "安静", "古建筑"],
@@ -621,7 +629,7 @@
                 name: "马达加斯加猴面包树大道",
                 location: "马达加斯加",
                 category: "自然",
-                image: "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800&q=80",
+                image: "https://picsum.photos/seed/madagascar/800/600",
                 shortDesc: "世界上最独特的树木景观，日落时分的猴面包树剪影令人震撼。",
                 fullDesc: "猴面包树大道位于马达加斯加西海岸的穆隆达瓦和贝卢附近。这些树龄高达800年的巨型猴面包树排列成行，创造出世界上最具标志性的自然景观之一。日落时分，树木的巨大剪影在余晖中格外壮观，是摄影师的梦想之地。",
                 tags: ["猴面包树", "日落", "野生动物", "摄影"],
@@ -636,7 +644,7 @@
                 name: "亚速尔群岛",
                 location: "葡萄牙",
                 category: "海岛",
-                image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80",
+                image: "https://picsum.photos/seed/azores/800/600",
                 shortDesc: "大西洋中部的火山群岛，温泉、火山湖和观鲸的绝佳去处。",
                 fullDesc: "亚速尔群岛位于大西洋中部，距离葡萄牙本土约1500公里。这个由9个火山岛组成的群岛拥有令人惊叹的自然景观：碧蓝的火山口湖、地热温泉、茂密的绿色植被和壮观的海岸线。这里也是世界级的观鲸目的地，每年有多种鲸类在此出没。",
                 tags: ["火山", "温泉", "观鲸", "徒步"],
@@ -651,7 +659,7 @@
                 name: "斯洛文尼亚布莱德湖",
                 location: "斯洛文尼亚",
                 category: "自然",
-                image: "https://images.unsplash.com/photo-1566757165446-ac30d9cb6c64?w=800&q=80",
+                image: "https://picsum.photos/seed/bled/800/600",
                 shortDesc: "阿尔卑斯山脚下的碧绿湖泊，湖心小岛教堂如童话般梦幻。",
                 fullDesc: "布莱德湖是斯洛文尼亚最著名的景点之一，却依然保持着小众的宁静。这个冰川湖被阿尔卑斯山环绕，湖中央有一座小岛，岛上矗立着一座17世纪的教堂。湖畔的布莱德城堡俯瞰整个湖泊，景色如诗如画。",
                 tags: ["湖泊", "城堡", "教堂", "浪漫"],
@@ -666,7 +674,7 @@
                 name: "哈萨克斯坦恰伦大峡谷",
                 location: "哈萨克斯坦",
                 category: "自然",
-                image: "https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=800&q=80",
+                image: "https://picsum.photos/seed/charyn/800/600",
                 shortDesc: "中亚的'大峡谷'，红色砂岩形成的奇特地貌，少有人知的壮观景色。",
                 fullDesc: "恰伦大峡谷位于哈萨克斯坦东南部，距离阿拉木图约200公里。这个被称为'哈萨克斯坦大峡谷'的地方，拥有高达300米的红色砂岩峭壁。经过数百万年的风蚀作用，形成了各种奇特的岩石造型，其中最著名的是'城堡谷'区域。",
                 tags: ["峡谷", "徒步", "地质奇观", "摄影"],
@@ -681,7 +689,7 @@
                 name: "墨西哥瓜纳华托",
                 location: "墨西哥",
                 category: "古镇",
-                image: "https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?w=800&q=80",
+                image: "https://picsum.photos/seed/guanajuato/800/600",
                 shortDesc: "色彩斑斓的山城，银矿致富的殖民城市，地下隧道系统独一无二。",
                 fullDesc: "瓜纳华托是墨西哥中部的一座殖民城市，以其色彩缤纷的建筑和独特的地下隧道系统而闻名。这座城市建在山谷中，五颜六色的房屋层层叠叠爬满山坡。城市下方有一个复杂的隧道网络，原本是河道，现在成为了独特的地下交通系统。",
                 tags: ["彩色建筑", "殖民地", "隧道", "文化"],
@@ -696,7 +704,7 @@
                 name: "冰岛西峡湾",
                 location: "冰岛",
                 category: "自然",
-                image: "https://images.unsplash.com/photo-1504893524553-b855bce32c67?w=800&q=80",
+                image: "https://picsum.photos/seed/westfjords/800/600",
                 shortDesc: "冰岛最偏远的区域，原始荒野、温泉瀑布和北极狐的家园。",
                 fullDesc: "西峡湾是冰岛最人迹罕至的地区，占地面积约为冰岛的八分之一，但人口不到总人口的10%。这里拥有冰岛最原始的自然风光：险峻的峡湾、壮观的瀑布、野生北极狐和无尽的荒野。夏季的午夜太阳和冬季的极光让这里更添神秘色彩。",
                 tags: ["峡湾", "荒野", "温泉", "极光"],
@@ -711,7 +719,7 @@
                 name: "贵州千户苗寨",
                 location: "中国",
                 category: "古镇",
-                image: "https://images.unsplash.com/photo-1580837119756-563d608dd119?w=800&q=80",
+                image: "https://picsum.photos/seed/miao/800/600",
                 shortDesc: "世界最大的苗族聚居村寨，层层叠叠的吊脚楼与苗族文化的完美展现。",
                 fullDesc: "西江千户苗寨位于贵州省雷山县，由十余个依山而建的自然村寨组成，是中国乃至世界最大的苗族聚居村寨。1000多户苗族人家的吊脚楼层层叠叠，依山而建，夜晚灯火璀璨如繁星。这里完整保留了苗族的传统习俗、建筑风格和生活方式。",
                 tags: ["苗族文化", "吊脚楼", "梯田", "民俗"],
@@ -731,7 +739,19 @@
         document.addEventListener('DOMContentLoaded', () => {
             renderDestinations();
             setupEventListeners();
+            handleImageErrors();
         });
+
+        // Handle image loading errors
+        function handleImageErrors() {
+            document.addEventListener('error', (e) => {
+                if (e.target.tagName === 'IMG') {
+                    e.target.style.display = 'block';
+                    e.target.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                    e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0idXJsKCNncmFkKSIvPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6IzY2N2VlYTtzdG9wLW9wYWNpdHk6MSIgLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM3NjRiYTI7c3RvcC1vcGFjaXR5OjEiIC8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHRleHQgeD0iNDAwIiB5PSIzMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0MCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfjI88L3RleHQ+PC9zdmc+';
+                }
+            }, true);
+        }
 
         // Event Listeners
         function setupEventListeners() {
@@ -787,7 +807,7 @@
             grid.innerHTML = filtered.map(dest => `
                 <div class="destination-card" onclick="openModal(${dest.id})">
                     <div class="card-image-wrapper">
-                        <img class="card-image" src="${dest.image}" alt="${dest.name}">
+                        <img class="card-image" src="${dest.image}" alt="${dest.name}" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #667eea 0%, #764ba2 100%)';this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0idXJsKCNncmFkKSIvPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6IzY2N2VlYTtzdG9wLW9wYWNpdHk6MSIgLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM3NjRiYTI7c3RvcC1vcGFjaXR5OjEiIC8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHRleHQgeD0iNDAwIiB5PSIzMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0MCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfjI88L3RleHQ+PC9zdmc+';">
                         <div class="card-badge">${dest.category}</div>
                     </div>
                     <div class="card-content">
