@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实时天气组件</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .weather-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 40px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-btn {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .search-btn:active {
+            transform: translateY(0);
+        }
+
+        .weather-info {
+            text-align: center;
+        }
+
+        .city-name {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .date-time {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .weather-icon {
+            font-size: 100px;
+            margin: 20px 0;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .temperature {
+            font-size: 72px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .unit-toggle {
+            font-size: 24px;
+            cursor: pointer;
+            background: #f0f0f0;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        .unit-toggle:hover {
+            background: #e0e0e0;
+        }
+
+        .weather-description {
+            font-size: 24px;
+            color: #555;
+            text-transform: capitalize;
+            margin-bottom: 30px;
+        }
+
+        .weather-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .detail-item {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 15px;
+            transition: transform 0.3s;
+        }
+
+        .detail-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .detail-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .loading {
+            text-align: center;
+            color: #667eea;
+            font-size: 18px;
+            display: none;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message.active {
+            display: block;
+        }
+
+        .location-btn {
+            background: #f0f0f0;
+            border: none;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s;
+        }
+
+        .location-btn:hover {
+            background: #e0e0e0;
+            transform: rotate(45deg);
+        }
+
+        @media (max-width: 480px) {
+            .weather-container {
+                padding: 25px;
+            }
+
+            .city-name {
+                font-size: 24px;
+            }
+
+            .temperature {
+                font-size: 56px;
+            }
+
+            .weather-details {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="weather-container">
+        <div class="search-box">
+            <input type="text" class="search-input" id="cityInput" placeholder="输入城市名称..." value="Beijing">
+            <button class="location-btn" id="locationBtn" title="使用当前位置">📍</button>
+            <button class="search-btn" id="searchBtn">搜索</button>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+        <div class="loading" id="loading">加载中...</div>
+
+        <div class="weather-info" id="weatherInfo" style="display: none;">
+            <h1 class="city-name" id="cityName">--</h1>
+            <div class="date-time" id="dateTime">--</div>
+            
+            <div class="weather-icon" id="weatherIcon">🌤️</div>
+            
+            <div class="temperature">
+                <span id="temp">--</span>
+                <span class="unit-toggle" id="unitToggle" title="点击切换单位">°C</span>
+            </div>
+            
+            <div class="weather-description" id="description">--</div>
+
+            <div class="weather-details">
+                <div class="detail-item">
+                    <div class="detail-icon">💧</div>
+                    <div class="detail-label">湿度</div>
+                    <div class="detail-value" id="humidity">--%</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-icon">💨</div>
+                    <div class="detail-label">风速</div>
+                    <div class="detail-value" id="windSpeed">-- m/s</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-icon">🌡️</div>
+                    <div class="detail-label">体感温度</div>
+                    <div class="detail-value" id="feelsLike">--°</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-icon">👁️</div>
+                    <div class="detail-label">能见度</div>
+                    <div class="detail-value" id="visibility">-- km</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-icon">🔽</div>
+                    <div class="detail-label">气压</div>
+                    <div class="detail-value" id="pressure">-- hPa</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-icon">☁️</div>
+                    <div class="detail-label">云量</div>
+                    <div class="detail-value" id="clouds">--%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // OpenWeatherMap API密钥 (请替换为您自己的API密钥)
+        // 注册地址: https://openweathermap.org/api
+        const API_KEY = 'YOUR_API_KEY_HERE'; // 需要替换为实际的API密钥
+        const API_URL = 'https://api.openweathermap.org/data/2.5/weather';
+
+        let isCelsius = true;
+        let currentData = null;
+
+        // 天气图标映射
+        const weatherIcons = {
+            '01d': '☀️', '01n': '🌙',
+            '02d': '⛅', '02n': '☁️',
+            '03d': '☁️', '03n': '☁️',
+            '04d': '☁️', '04n': '☁️',
+            '09d': '🌧️', '09n': '🌧️',
+            '10d': '🌦️', '10n': '🌧️',
+            '11d': '⛈️', '11n': '⛈️',
+            '13d': '❄️', '13n': '❄️',
+            '50d': '🌫️', '50n': '🌫️'
+        };
+
+        // DOM元素
+        const elements = {
+            cityInput: document.getElementById('cityInput'),
+            searchBtn: document.getElementById('searchBtn'),
+            locationBtn: document.getElementById('locationBtn'),
+            loading: document.getElementById('loading'),
+            errorMessage: document.getElementById('errorMessage'),
+            weatherInfo: document.getElementById('weatherInfo'),
+            cityName: document.getElementById('cityName'),
+            dateTime: document.getElementById('dateTime'),
+            weatherIcon: document.getElementById('weatherIcon'),
+            temp: document.getElementById('temp'),
+            unitToggle: document.getElementById('unitToggle'),
+            description: document.getElementById('description'),
+            humidity: document.getElementById('humidity'),
+            windSpeed: document.getElementById('windSpeed'),
+            feelsLike: document.getElementById('feelsLike'),
+            visibility: document.getElementById('visibility'),
+            pressure: document.getElementById('pressure'),
+            clouds: document.getElementById('clouds')
+        };
+
+        // 显示错误信息
+        function showError(message) {
+            elements.errorMessage.textContent = message;
+            elements.errorMessage.classList.add('active');
+            setTimeout(() => {
+                elements.errorMessage.classList.remove('active');
+            }, 5000);
+        }
+
+        // 显示加载状态
+        function setLoading(isLoading) {
+            if (isLoading) {
+                elements.loading.classList.add('active');
+                elements.weatherInfo.style.display = 'none';
+            } else {
+                elements.loading.classList.remove('active');
+            }
+        }
+
+        // 更新日期时间
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit',
+                weekday: 'long'
+            };
+            elements.dateTime.textContent = now.toLocaleDateString('zh-CN', options);
+        }
+
+        // 温度转换
+        function convertTemp(kelvin, toCelsius = true) {
+            if (toCelsius) {
+                return Math.round(kelvin - 273.15);
+            } else {
+                return Math.round((kelvin - 273.15) * 9/5 + 32);
+            }
+        }
+
+        // 获取天气数据
+        async function fetchWeather(city) {
+            try {
+                setLoading(true);
+                
+                // 模拟API调用（因为没有真实的API密钥）
+                // 在实际使用时，请取消注释下面的代码并注释掉模拟数据
+                
+                /*
+                const response = await fetch(`${API_URL}?q=${city}&appid=${API_KEY}&lang=zh_cn`);
+                if (!response.ok) {
+                    throw new Error('城市未找到或网络错误');
+                }
+                const data = await response.json();
+                */
+                
+                // 模拟数据（用于演示）
+                const data = {
+                    name: city,
+                    weather: [{
+                        description: '晴朗',
+                        icon: '01d'
+                    }],
+                    main: {
+                        temp: 295.15, // 22°C in Kelvin
+                        feels_like: 294.15,
+                        humidity: 65,
+                        pressure: 1013
+                    },
+                    wind: {
+                        speed: 3.5
+                    },
+                    visibility: 10000,
+                    clouds: {
+                        all: 20
+                    }
+                };
+
+                currentData = data;
+                displayWeather(data);
+                setLoading(false);
+            } catch (error) {
+                setLoading(false);
+                showError(error.message || '获取天气数据失败，请稍后重试');
+            }
+        }
+
+        // 通过地理位置获取天气
+        async function fetchWeatherByLocation(lat, lon) {
+            try {
+                setLoading(true);
+                
+                // 模拟数据
+                const data = {
+                    name: '当前位置',
+                    weather: [{
+                        description: '多云',
+                        icon: '02d'
+                    }],
+                    main: {
+                        temp: 293.15,
+                        feels_like: 292.15,
+                        humidity: 70,
+                        pressure: 1015
+                    },
+                    wind: {
+                        speed: 4.2
+                    },
+                    visibility: 8000,
+                    clouds: {
+                        all: 40
+                    }
+                };
+
+                currentData = data;
+                displayWeather(data);
+                setLoading(false);
+            } catch (error) {
+                setLoading(false);
+                showError('获取位置天气失败');
+            }
+        }
+
+        // 显示天气数据
+        function displayWeather(data) {
+            elements.cityName.textContent = data.name;
+            updateDateTime();
+            
+            const iconCode = data.weather[0].icon;
+            elements.weatherIcon.textContent = weatherIcons[iconCode] || '🌤️';
+            
+            const temp = convertTemp(data.main.temp, isCelsius);
+            elements.temp.textContent = temp;
+            
+            elements.description.textContent = data.weather[0].description;
+            elements.humidity.textContent = `${data.main.humidity}%`;
+            elements.windSpeed.textContent = `${data.wind.speed} m/s`;
+            
+            const feelsLike = convertTemp(data.main.feels_like, isCelsius);
+            elements.feelsLike.textContent = `${feelsLike}°`;
+            
+            elements.visibility.textContent = `${(data.visibility / 1000).toFixed(1)} km`;
+            elements.pressure.textContent = `${data.main.pressure} hPa`;
+            elements.clouds.textContent = `${data.clouds.all}%`;
+
+            elements.weatherInfo.style.display = 'block';
+        }
+
+        // 切换温度单位
+        function toggleUnit() {
+            if (!currentData) return;
+            
+            isCelsius = !isCelsius;
+            elements.unitToggle.textContent = isCelsius ? '°C' : '°F';
+            
+            const temp = convertTemp(currentData.main.temp, isCelsius);
+            elements.temp.textContent = temp;
+            
+            const feelsLike = convertTemp(currentData.main.feels_like, isCelsius);
+            elements.feelsLike.textContent = `${feelsLike}°`;
+        }
+
+        // 获取用户位置
+        function getUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        fetchWeatherByLocation(position.coords.latitude, position.coords.longitude);
+                    },
+                    (error) => {
+                        showError('无法获取您的位置，请手动输入城市');
+                    }
+                );
+            } else {
+                showError('您的浏览器不支持地理定位');
+            }
+        }
+
+        // 事件监听
+        elements.searchBtn.addEventListener('click', () => {
+            const city = elements.cityInput.value.trim();
+            if (city) {
+                fetchWeather(city);
+            } else {
+                showError('请输入城市名称');
+            }
+        });
+
+        elements.cityInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                elements.searchBtn.click();
+            }
+        });
+
+        elements.unitToggle.addEventListener('click', toggleUnit);
+        elements.locationBtn.addEventListener('click', getUserLocation);
+
+        // 页面加载时获取默认城市天气
+        window.addEventListener('load', () => {
+            fetchWeather('Beijing');
+            // 每30秒更新一次时间
+            setInterval(updateDateTime, 30000);
+        });
+
+        // API密钥提示
+        if (API_KEY === 'YOUR_API_KEY_HERE') {
+            console.warn('⚠️ 请设置OpenWeatherMap API密钥！');
+            console.info('📝 注册地址: https://openweathermap.org/api');
+            console.info('🔧 在代码中将 YOUR_API_KEY_HERE 替换为您的实际API密钥');
+        }
+    </script>
+</body>
+</html>
