@@ -1,0 +1,21 @@
+# 测试框架依赖
+# Python 3.7+
+
+# 核心依赖（使用Python标准库，无需额外安装）
+# - json
+# - time
+# - threading
+# - unittest (可选，作为参考)
+
+# 可选依赖
+# pytest==7.4.0  # 如果需要与pytest集成
+# requests==2.31.0  # 如果需要更强大的HTTP客户端
+# SQLAlchemy==2.0.19  # 如果需要ORM支持
+# psycopg2-binary==2.9.6  # PostgreSQL支持
+# pymongo==4.4.1  # MongoDB支持
+# redis==4.6.0  # Redis支持
+
+# 开发依赖
+# black==23.7.0  # 代码格式化
+# flake8==6.0.0  # 代码检查
+# mypy==1.4.1  # 类型检查
