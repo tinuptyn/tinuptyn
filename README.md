@@ -1,10 +1,17 @@
-- 👋 Hi, I’m @tinuptyn
-- 👀 I’m interested in ...
-- 🌱 I’m currently learning ...
-- 💞️ I’m looking to collaborate on ...
-- 📫 How to reach me ...
+## 生活服务 · 实时天气组件
 
-<!---
-tinuptyn/tinuptyn is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-You can click the Preview link to take a look at your changes.
---->
+`weather-widget.html` 提供一个可直接嵌入任意生活服务类页面或低代码平台的前端组件，支持实时天气查询、地理定位和未来 12 小时温度曲线可视化。
+
+### 功能亮点
+- 城市关键字检索：输入即可获取当前温度、体感温度、湿度、风速和天气状态；
+- 一键定位：在支持 Geolocation 的浏览器内点击“使用当前位置”即可自动查询；
+- 温度趋势：自绘渐变折线图展示未来 12 小时温度趋势，并附时间温度胶囊；
+- 纯前端实现：只依赖 Open-Meteo 免费 API，可嵌入 WebView、H5 活动页或小程序内嵌页。
+
+### 使用方式
+1. 直接部署/预览：打开 `weather-widget.html`，即可作为静态页面使用；
+2. 内嵌现有页面：复制 `<div class="weather-shell">...</div>` 及 `<script>` 部分粘贴到目标页面即可；
+3. 定制样式：如需匹配业务品牌，可调整文件顶部 `<style>` 中的渐变、圆角及 typography；
+4. 自定义数据源：替换 `fetchWeather` / `geocode` 方法即可切换到自有天气 API。
+
+> 提示：如需深色模式，给外层增加 `data-theme="dark"` 并覆盖背景渐变即可。
