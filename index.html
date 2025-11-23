@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hidden Journeys · 小众旅行灵感面板</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #0f172a;
+      --bg-soft: rgba(15, 23, 42, 0.8);
+      --fg: #f8fafc;
+      --accent: #38bdf8;
+      --accent-2: #c084fc;
+      --card-bg: rgba(15, 23, 42, 0.5);
+      --glass: rgba(255, 255, 255, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', 'Noto Sans SC', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+    }
+
+    body {
+      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.3), transparent 55%),
+        radial-gradient(circle at 20% 20%, rgba(192, 132, 252, 0.35), transparent 45%),
+        var(--bg);
+      color: var(--fg);
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      gap: 24px;
+    }
+
+    header {
+      background: var(--glass);
+      border: 1px solid rgba(248, 250, 252, 0.08);
+      border-radius: 20px;
+      padding: 32px;
+      backdrop-filter: blur(20px);
+      display: grid;
+      gap: 16px;
+    }
+
+    header h1 {
+      font-size: clamp(28px, 4vw, 40px);
+      letter-spacing: 0.01em;
+    }
+
+    header p {
+      color: rgba(248, 250, 252, 0.85);
+      max-width: 720px;
+      line-height: 1.6;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .controls input[type="search"] {
+      flex: 1;
+      min-width: 220px;
+      border-radius: 999px;
+      border: 1px solid rgba(248, 250, 252, 0.2);
+      background: rgba(15, 23, 42, 0.6);
+      padding: 10px 18px;
+      color: inherit;
+      outline: 2px solid transparent;
+      transition: outline 0.2s ease;
+    }
+
+    .controls input[type="search"]:focus {
+      outline: 2px solid rgba(56, 189, 248, 0.6);
+    }
+
+    .chip-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(248, 250, 252, 0.18);
+      background: rgba(15, 23, 42, 0.5);
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+      user-select: none;
+    }
+
+    .chip.active {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.8), rgba(192, 132, 252, 0.8));
+      border-color: transparent;
+      color: #0f172a;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      border-radius: 24px;
+      border: 1px solid rgba(248, 250, 252, 0.1);
+      background: rgba(15, 23, 42, 0.55);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 320px;
+      cursor: pointer;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(56, 189, 248, 0.5);
+    }
+
+    .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      filter: saturate(1.05);
+    }
+
+    .card-body {
+      padding: 18px 20px 24px;
+      display: grid;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .tagline {
+      color: rgba(248, 250, 252, 0.75);
+      font-size: 14px;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .pill {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.18);
+      color: var(--accent);
+      width: fit-content;
+    }
+
+    .card ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 4px;
+    }
+
+    .card ul li {
+      color: rgba(248, 250, 252, 0.75);
+      font-size: 14px;
+    }
+
+    .panel-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+    }
+
+    .panel {
+      border-radius: 24px;
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(248, 250, 252, 0.08);
+      padding: 24px;
+      display: grid;
+      gap: 20px;
+      min-height: 380px;
+    }
+
+    .panel h3 {
+      font-size: 20px;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+    }
+
+    .stat {
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(248, 250, 252, 0.07);
+      display: grid;
+      gap: 6px;
+    }
+
+    .stat span {
+      font-size: 12px;
+      color: rgba(248, 250, 252, 0.6);
+    }
+
+    .map {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      border-radius: 18px;
+      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.3), rgba(15, 23, 42, 0.9)),
+        url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80') center / cover;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .map .marker {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.9);
+      transform: translate(-50%, -50%) scale(1);
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .slider {
+      display: grid;
+      gap: 6px;
+    }
+
+    .slider input {
+      width: 100%;
+    }
+
+    .link {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 14px;
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .panel-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <p class="pill">Hidden Journeys</p>
+      <h1>一屏掌握全球小众旅行地</h1>
+      <p>
+        精选 6 个正在升温、但仍保持原生魅力的目的地。通过灵活的检索、互动卡片和旅程建议，快速为内容策划或旅行提案寻找灵感，并可将此页面直接嵌入项目中使用。
+      </p>
+      <div class="controls">
+        <input type="search" id="search" placeholder="输入地名、气候、活动关键字..." />
+        <div class="chip-group" id="vibeFilters">
+          <span class="chip active" data-vibe="all">全部氛围</span>
+          <span class="chip" data-vibe="nature">山野疗愈</span>
+          <span class="chip" data-vibe="culture">文化游牧</span>
+          <span class="chip" data-vibe="adventure">轻冒险</span>
+          <span class="chip" data-vibe="coast">冷门海岸</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="panel-layout">
+      <section class="panel">
+        <div>
+          <div class="tagline">当前目的地</div>
+          <h3 id="detailName">选择卡片以查看详情</h3>
+          <p id="detailDescription" style="color: rgba(248, 250, 252, 0.75); line-height: 1.6;">
+            点击任意目的地卡片，即可获取当地亮点、最佳季节与建议行程长度。
+          </p>
+        </div>
+        <div class="stat-grid">
+          <div class="stat">
+            <span>最佳季节</span>
+            <strong id="detailSeason">—</strong>
+          </div>
+          <div class="stat">
+            <span>建议停留</span>
+            <strong id="detailDuration">—</strong>
+          </div>
+          <div class="stat">
+            <span>体验标签</span>
+            <strong id="detailTags">—</strong>
+          </div>
+          <div class="stat">
+            <span>旅程指数</span>
+            <strong id="detailIndex">—</strong>
+          </div>
+        </div>
+        <a class="link" id="detailLink" href="#" target="_blank" rel="noreferrer noopener">快速了解 &rsaquo;</a>
+        <div class="slider">
+          <label for="remoteness">愿意接受的「远离人群」程度：<span id="remotenessValue">50%</span></label>
+          <input type="range" id="remoteness" min="0" max="100" value="50" />
+        </div>
+      </section>
+      <section class="panel">
+        <div class="map" id="map">
+          <div class="marker" id="mapMarker" style="left: 50%; top: 50%; opacity: 0;"></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="grid" id="cards"></section>
+  </div>
+
+  <script>
+    const destinations = [
+      {
+        id: 'azores',
+        name: '亚速尔群岛 · 葡萄牙',
+        tagline: '大西洋的绿宝石火山',
+        description: '火山地貌、蓝色火山湖与海豚巡游共存的慢旅行天堂，适合喜欢自然疗愈与可持续体验的创作者。',
+        season: '4-6 月少游客期',
+        duration: '6-8 天岛屿跳跃',
+        tags: ['徒步', '海洋观测', '地热泡池'],
+        vibe: ['nature', 'adventure', 'coast'],
+        remoteness: 60,
+        index: 86,
+        link: 'https://www.visitazores.com',
+        coords: { x: 36, y: 42 },
+        image: 'https://images.unsplash.com/photo-1526498460520-4c246339dccb?auto=format&fit=crop&w=900&q=80'
+      },
+      {
+        id: 'lofotens',
+        name: '罗弗敦群岛 · 挪威',
+        tagline: '极光与艺术渔村',
+        description: '峽湾、极光、北极冲浪与在地艺术坊交织的冷门北极圈体验，冬春两季都适合拍摄纪录片式素材。',
+        season: '2-4 月极光尾声',
+        duration: '5-7 天慢游',
+        tags: ['极光猎奇', '北极冲浪', '胶囊旅店'],
+        vibe: ['adventure', 'coast', 'culture'],
+        remoteness: 75,
+        index: 91,
+        link: 'https://www.lofoten.info',
+        coords: { x: 50, y: 18 },
+        image: 'https://images.unsplash.com/photo-1508264165352-258a6c0973d5?auto=format&fit=crop&w=900&q=80'
+      },
+      {
+        id: 'bhutan',
+        name: '哈阿谷 · 不丹',
+        tagline: '喜马拉雅秘境农谷',
+        description: '仍保持传统木屋与农耕节庆的小城，国家幸福指数和僧侣仪式让精神疗愈与文化沉浸并行。',
+        season: '9-11 月收获季',
+        duration: '7-9 天',
+        tags: ['寺庙访学', '森林浴', '手作染织'],
+        vibe: ['culture', 'nature'],
+        remoteness: 82,
+        index: 88,
+        link: 'https://www.bhutan.travel',
+        coords: { x: 68, y: 42 },
+        image: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80'
+      },
+      {
+        id: 'salento',
+        name: '萨连托咖啡小镇 · 哥伦比亚',
+        tagline: '安第斯云雾森林步道',
+        description: '高耸腊棕树与彩色殖民街区交织，适合咖啡溯源与轻徒步的内容策划，交通友好又不过度商业化。',
+        season: '12-2 月干季',
+        duration: '4-6 天',
+        tags: ['咖啡寻味', '徒步', '胶片街拍'],
+        vibe: ['culture', 'nature'],
+        remoteness: 48,
+        index: 79,
+        link: 'https://colombia.travel/en/salento',
+        coords: { x: 22, y: 55 },
+        image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=900&q=80'
+      },
+      {
+        id: 'jeju',
+        name: '牛岛 · 济州外海',
+        tagline: '火山海岸与潜女文化',
+        description: '比济州市更安静的离岛，可骑行穿梭火山岩海岸线，向海女学徒体验低碳海鲜餐桌。',
+        season: '4-5 月花季',
+        duration: '3-4 天微度假',
+        tags: ['海女体验', '环岛骑行', '轻潜水'],
+        vibe: ['coast', 'culture'],
+        remoteness: 30,
+        index: 74,
+        link: 'https://www.visitjeju.net',
+        coords: { x: 73, y: 36 },
+        image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80'
+      },
+      {
+        id: 'raz',
+        name: '拉兹利亚 · 阿曼峡湾',
+        tagline: '阿拉伯海里隐秘峡湾',
+        description: '穆桑达姆半岛的石灰岩峡湾配上传统多桅木船，既能观豚也能夜宿荒岛，适合高端定制露营。',
+        season: '11-2 月凉爽期',
+        duration: '4-5 天',
+        tags: ['帆船露营', '观豚', '星空摄影'],
+        vibe: ['adventure', 'coast'],
+        remoteness: 55,
+        index: 83,
+        link: 'https://experienceoman.om',
+        coords: { x: 64, y: 40 },
+        image: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=900&q=80'
+      }
+    ];
+
+    const cardsContainer = document.getElementById('cards');
+    const searchInput = document.getElementById('search');
+    const chips = Array.from(document.querySelectorAll('.chip'));
+    const remotenessInput = document.getElementById('remoteness');
+    const remotenessValue = document.getElementById('remotenessValue');
+    const marker = document.getElementById('mapMarker');
+
+    const detailName = document.getElementById('detailName');
+    const detailDescription = document.getElementById('detailDescription');
+    const detailSeason = document.getElementById('detailSeason');
+    const detailDuration = document.getElementById('detailDuration');
+    const detailTags = document.getElementById('detailTags');
+    const detailIndex = document.getElementById('detailIndex');
+    const detailLink = document.getElementById('detailLink');
+
+    let activeVibe = 'all';
+    let visibleDestinations = destinations;
+
+    const renderCards = () => {
+      cardsContainer.innerHTML = '';
+      if (!visibleDestinations.length) {
+        cardsContainer.innerHTML = '<p style="grid-column: 1 / -1; color: rgba(248, 250, 252, 0.7);">未找到符合条件的小众旅行地。</p>';
+        return;
+      }
+      visibleDestinations.forEach((dest) => {
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.dataset.id = dest.id;
+        card.innerHTML = `
+          <img src="${dest.image}" alt="${dest.name}" loading="lazy" />
+          <div class="card-body">
+            <div class="tagline">${dest.tagline}</div>
+            <h3>${dest.name}</h3>
+            <div class="pill">${dest.season}</div>
+            <ul>
+              ${dest.tags.map((tag) => `<li>• ${tag}</li>`).join('')}
+            </ul>
+            <small style="color: rgba(248, 250, 252, 0.6);">旅程指数 ${dest.index}</small>
+          </div>
+        `;
+        card.addEventListener('click', () => updateDetail(dest));
+        cardsContainer.appendChild(card);
+      });
+    };
+
+    const applyFilters = () => {
+      const query = searchInput.value.toLowerCase();
+      const minRemoteness = Number(remotenessInput.value);
+      remotenessValue.textContent = `${minRemoteness}%`;
+
+      visibleDestinations = destinations.filter((dest) => {
+        const matchVibe = activeVibe === 'all' || dest.vibe.includes(activeVibe);
+        const matchSearch =
+          dest.name.toLowerCase().includes(query) ||
+          dest.description.toLowerCase().includes(query) ||
+          dest.tags.some((tag) => tag.toLowerCase().includes(query));
+        const matchRemoteness = dest.remoteness >= minRemoteness;
+        return matchVibe && matchSearch && matchRemoteness;
+      });
+      renderCards();
+    };
+
+    const updateDetail = (dest) => {
+      detailName.textContent = dest.name;
+      detailDescription.textContent = dest.description;
+      detailSeason.textContent = dest.season;
+      detailDuration.textContent = dest.duration;
+      detailTags.textContent = dest.tags.join(' · ');
+      detailIndex.textContent = `${dest.index}/100`;
+      detailLink.href = dest.link;
+      detailLink.textContent = `了解 ${dest.name.replace(' · ', ' · ')} ›`;
+      marker.style.opacity = 1;
+      marker.style.left = `${dest.coords.x}%`;
+      marker.style.top = `${dest.coords.y}%`;
+      marker.style.transform = 'translate(-50%, -50%) scale(1.2)';
+      setTimeout(() => {
+        marker.style.transform = 'translate(-50%, -50%) scale(1)';
+      }, 250);
+    };
+
+    searchInput.addEventListener('input', applyFilters);
+    remotenessInput.addEventListener('input', applyFilters);
+    chips.forEach((chip) =>
+      chip.addEventListener('click', () => {
+        chips.forEach((c) => c.classList.remove('active'));
+        chip.classList.add('active');
+        activeVibe = chip.dataset.vibe;
+        applyFilters();
+      })
+    );
+
+    renderCards();
+    applyFilters();
+  </script>
+</body>
+</html>
