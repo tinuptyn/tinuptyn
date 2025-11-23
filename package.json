@@ -1,0 +1,39 @@
+{
+  "name": "realtime-weather-widget",
+  "version": "1.0.0",
+  "description": "一个美观、现代化的实时天气交互式前端组件，适用于生活服务类应用",
+  "main": "weather-widget.js",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "serve": "python3 -m http.server 8080"
+  },
+  "keywords": [
+    "weather",
+    "widget",
+    "component",
+    "frontend",
+    "ui",
+    "realtime",
+    "interactive",
+    "visualization",
+    "openweathermap",
+    "javascript",
+    "html5",
+    "css3"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/weather-widget.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/weather-widget/issues"
+  },
+  "homepage": "https://github.com/yourusername/weather-widget#readme",
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}
