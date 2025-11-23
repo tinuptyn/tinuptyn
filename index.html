@@ -281,8 +281,8 @@
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
-                <div style="overflow: hidden;">
-                    <img src="${dest.image}" alt="${dest.title}" class="card-image">
+                <div style="overflow: hidden; background-color: #f0f0f0;">
+                    <img src="${dest.image}" alt="${dest.title}" class="card-image" onerror="this.onerror=null; this.src='https://placehold.co/800x500/e0e0e0/888888?text=' + encodeURIComponent('${dest.title}');">
                 </div>
                 <div class="card-content">
                     <span class="location-tag">${dest.location}</span>
