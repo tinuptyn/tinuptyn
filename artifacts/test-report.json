@@ -1,0 +1,112 @@
+{
+  "results": [
+    {
+      "suite": "unit",
+      "kind": "unit",
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration": 0.00020499108359217644,
+      "success": true,
+      "details": [
+        {
+          "test": "test_compute_primes (test_math_utils.TestMathUtils.test_compute_primes)",
+          "status": "passed"
+        },
+        {
+          "test": "test_fibonacci (test_math_utils.TestMathUtils.test_fibonacci)",
+          "status": "passed"
+        },
+        {
+          "test": "test_running_total (test_math_utils.TestMathUtils.test_running_total)",
+          "status": "passed"
+        },
+        {
+          "test": "test_safe_divide (test_math_utils.TestMathUtils.test_safe_divide)",
+          "status": "passed"
+        }
+      ],
+      "logs": "test_compute_primes (test_math_utils.TestMathUtils.test_compute_primes) ... ok\ntest_fibonacci (test_math_utils.TestMathUtils.test_fibonacci) ... ok\ntest_running_total (test_math_utils.TestMathUtils.test_running_total) ... ok\ntest_safe_divide (test_math_utils.TestMathUtils.test_safe_divide) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "suite": "integration",
+      "kind": "integration",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration": 0.00011165579780936241,
+      "success": true,
+      "details": [
+        {
+          "test": "test_pipeline_persists_records (test_data_pipeline.TestDataPipeline.test_pipeline_persists_records)",
+          "status": "passed"
+        }
+      ],
+      "logs": "test_pipeline_persists_records (test_data_pipeline.TestDataPipeline.test_pipeline_persists_records) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+    },
+    {
+      "suite": "performance",
+      "kind": "performance",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration": 0.0015877611003816128,
+      "success": true,
+      "details": [
+        {
+          "test": "test_fibonacci_cache_keeps_calls_fast (test_math_perf.TestMathPerformance.test_fibonacci_cache_keeps_calls_fast)",
+          "status": "passed",
+          "performance": [
+            {
+              "label": "fibonacci-30-cached",
+              "samples": [
+                0.00025099143385887146,
+                0.0002551823854446411,
+                0.00012060627341270447,
+                0.00012293457984924316,
+                0.00013504177331924438,
+                9.825453162193298e-05,
+                7.59027898311615e-05,
+                9.96515154838562e-05,
+                7.59027898311615e-05,
+                7.82310962677002e-05
+              ],
+              "average_ms": 0.0001312699168920517,
+              "max_ms": 0.0002551823854446411,
+              "p95_ms": 0.00025099143385887146,
+              "threshold_ms": 5
+            }
+          ]
+        },
+        {
+          "test": "test_prime_sieve_is_within_threshold (test_math_perf.TestMathPerformance.test_prime_sieve_is_within_threshold)",
+          "status": "passed",
+          "performance": [
+            {
+              "label": "prime-sieve-10k",
+              "samples": [
+                0.23921718820929527,
+                0.23101503029465675,
+                0.23151328787207603,
+                0.2307589165866375,
+                0.23195194080471992
+              ],
+              "average_ms": 0.2328912727534771,
+              "max_ms": 0.23921718820929527,
+              "p95_ms": 0.23195194080471992,
+              "threshold_ms": 200
+            }
+          ]
+        }
+      ],
+      "logs": "test_fibonacci_cache_keeps_calls_fast (test_math_perf.TestMathPerformance.test_fibonacci_cache_keeps_calls_fast) ... ok\ntest_prime_sieve_is_within_threshold (test_math_perf.TestMathPerformance.test_prime_sieve_is_within_threshold) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.002s\n\nOK\n"
+    }
+  ],
+  "success": true
+}

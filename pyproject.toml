@@ -1,0 +1,23 @@
+[project]
+name = "auto-test-framework"
+version = "0.1.0"
+description = "Configuration-driven automated testing framework with unit, integration, and performance runners"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Automation Team" }]
+dependencies = [
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "rich>=13.0",
+]
+
+[project.scripts]
+run-tests = "run_tests:main"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
