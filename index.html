@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>隐秘之境 | 小众旅行地探索</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #e67e22;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --light-text: #7f8c8d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 1rem;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding-bottom: 4rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .card-image {
+            height: 250px;
+            width: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover .card-image {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .location-tag {
+            display: inline-block;
+            background-color: rgba(230, 126, 34, 0.1);
+            color: var(--accent-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .card-desc {
+            color: var(--light-text);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .btn-explore {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .btn-explore:hover {
+            color: #d35400;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #aaa;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .modal h2 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .modal-info {
+            line-height: 1.8;
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .gallery { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>隐秘之境</h1>
+        <p class="subtitle">远离喧嚣，发现世界角落里的静谧与美好</p>
+    </header>
+
+    <div class="container">
+        <div class="gallery" id="destinationGallery">
+            <!-- Cards will be injected here via JS -->
+        </div>
+    </div>
+
+    <!-- Modal Template -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle">标题</h2>
+            <div class="modal-info" id="modalContent">内容</div>
+        </div>
+    </div>
+
+    <script>
+        const destinations = [
+            {
+                title: "法罗群岛",
+                location: "丹麦",
+                image: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                desc: "北大西洋上的18个火山岛，拥有令人窒息的悬崖和草顶小屋。",
+                details: "法罗群岛位于挪威海和北大西洋之间，这里有世界上最纯净的空气和未被破坏的自然景观。适合徒步旅行、观鸟和寻找内心的平静。"
+            },
+            {
+                title: "索科特拉岛",
+                location: "也门",
+                image: "https://images.unsplash.com/photo-1548675276-80516dd5d7b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                desc: "印度洋上的外星世界，独特的龙血树和白色沙丘。",
+                details: "索科特拉岛拥有世界上最奇特的植物群，包括著名的龙血树。这里就像地球上的外星景观，是生态旅游者的梦想之地。"
+            },
+            {
+                title: "舍夫沙万",
+                location: "摩洛哥",
+                image: "https://images.unsplash.com/photo-1539020140153-e479b8c22e70?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                desc: "迷失在蓝色的街道中，仿佛置身于童话世界。",
+                details: "舍夫沙万坐落在里夫山脉中，以其所有建筑都涂成各种深浅不一的蓝色而闻名。漫步在古老的麦地那，感受独特的文化氛围。"
+            },
+            {
+                title: "萨尔兹卡默古特",
+                location: "奥地利",
+                image: "https://images.unsplash.com/photo-1518098268026-4e89f1a2cd8e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                desc: "湖泊与山脉的交响曲，哈尔施塔特的所在地。",
+                details: "虽然哈尔施塔特很出名，但萨尔兹卡默古特地区还有许多未被发现的湖泊和小镇，如沃尔夫冈湖，提供绝佳的徒步和游船体验。"
+            },
+            {
+                title: "阿塔卡马沙漠",
+                location: "智利",
+                image: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                desc: "地球上最干燥的地方，观星的最佳去处。",
+                details: "阿塔卡马沙漠拥有类似火星的地貌、盐湖、间歇泉。夜晚，这里是世界上观星条件最好的地方之一。"
+            },
+            {
+                title: "罗弗敦群岛",
+                location: "挪威",
+                image: "https://images.unsplash.com/photo-1506456073848-6a3f45817812?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                desc: "极圈内的渔村，极光与午夜阳光的故乡。",
+                details: "红色的渔民小屋（Rorbuer）点缀在陡峭的山峰和峡湾之间。冬天可以看极光，夏天可以体验午夜阳光下的皮划艇。"
+            }
+        ];
+
+        const gallery = document.getElementById('destinationGallery');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalContent = document.getElementById('modalContent');
+
+        // Render Cards
+        destinations.forEach((dest, index) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div style="overflow: hidden; background-color: #f0f0f0;">
+                    <img src="${dest.image}" alt="${dest.title}" class="card-image" onerror="this.onerror=null; this.src='https://placehold.co/800x500/e0e0e0/888888?text=' + encodeURIComponent('${dest.title}');">
+                </div>
+                <div class="card-content">
+                    <span class="location-tag">${dest.location}</span>
+                    <h3 class="card-title">${dest.title}</h3>
+                    <p class="card-desc">${dest.desc}</p>
+                    <div class="card-footer">
+                        <span style="font-size: 0.8rem; color: #888;">探索指数 ⭐⭐⭐⭐⭐</span>
+                        <a href="#" class="btn-explore" onclick="openModal(${index}); return false;">查看详情 →</a>
+                    </div>
+                </div>
+            `;
+            // Add click event to whole card as well
+            card.addEventListener('click', () => openModal(index));
+            gallery.appendChild(card);
+        });
+
+        // Modal Functions
+        function openModal(index) {
+            const dest = destinations[index];
+            modalTitle.innerText = dest.title;
+            modalContent.innerText = dest.details;
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close on outside click
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
